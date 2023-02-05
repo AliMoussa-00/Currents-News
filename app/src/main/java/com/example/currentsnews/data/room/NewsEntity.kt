@@ -2,6 +2,7 @@ package com.example.currentsnews.data.room
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.example.currentsnews.model.News
 
 @Entity(tableName = "news")
 class NewsEntity(
@@ -15,3 +16,18 @@ class NewsEntity(
     val title: String,
     val url: String
     )
+
+
+fun NewsEntity.toNews(): News{
+    return News(
+        id = id,
+        author=author,
+        category = category.split(","),
+        description= description,
+        image=image,
+        language= language,
+        published = published,
+        title= title,
+        url= url
+    )
+}

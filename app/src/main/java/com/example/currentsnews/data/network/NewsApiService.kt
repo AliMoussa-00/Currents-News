@@ -5,5 +5,5 @@ import retrofit2.http.GET
 
 interface NewsApiService {
     @GET("latest-news?apiKey=$API_KEY")
-    suspend fun gitLatestNews(): List<NewsNetwork>
+    suspend fun gitLatestNews(): NewsApi
 }
