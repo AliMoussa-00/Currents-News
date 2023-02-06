@@ -34,6 +34,8 @@ class NewsViewModel @Inject constructor(
             started = SharingStarted.WhileSubscribed(5_000)
         )
 
+    var url = mutableStateOf("")
+
     var isRefreshing = mutableStateOf(false)
         private set
 
@@ -42,9 +44,8 @@ class NewsViewModel @Inject constructor(
     }
 
     fun refreshDatabase() {
-        isRefreshing.value = true
-
         viewModelScope.launch {
+            isRefreshing.value = true
             try {
                 val news = repository.getLatestNewsNet()
                     .news
@@ -57,7 +58,8 @@ class NewsViewModel @Inject constructor(
             } catch (e: IOException) {
                 e.localizedMessage?.let { Log.e("TAG", it) }
             }
+            isRefreshing.value = false
         }
-        isRefreshing.value = false
+
     }
 }
