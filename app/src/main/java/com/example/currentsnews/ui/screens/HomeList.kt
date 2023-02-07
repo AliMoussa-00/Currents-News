@@ -20,7 +20,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.currentsnews.model.News
@@ -31,7 +30,7 @@ import java.util.*
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun HomeList(
-    newsViewModel: NewsViewModel = hiltViewModel(),
+    newsViewModel: NewsViewModel,
 ) {
     val newsList by newsViewModel.latestNews.collectAsState()
 
@@ -43,7 +42,8 @@ fun HomeList(
     NewsList(
         latestNews = newsList,
         isRefreshing = isRefreshing,
-        pullRefreshState = pullRefreshState
+        pullRefreshState = pullRefreshState,
+        onNewsClicked = {newsViewModel.setScreenState(it)}
     )
 }
 
@@ -54,6 +54,7 @@ fun NewsList(
     latestNews: List<News>,
     isRefreshing: Boolean,
     pullRefreshState: PullRefreshState,
+    onNewsClicked: (String)->Unit
 ) {
     Box(contentAlignment = Alignment.TopCenter) {
         if (latestNews.isEmpty()) {
@@ -63,7 +64,7 @@ fun NewsList(
                 modifier = modifier.pullRefresh(pullRefreshState)
             ) {
                 items(latestNews) {
-                    ListItems(news = it)
+                    ListItems(news = it, onCardClick = onNewsClicked)
                 }
             }
             PullRefreshIndicator(
@@ -79,13 +80,14 @@ fun NewsList(
 fun ListItems(
     modifier: Modifier = Modifier,
     news: News,
+    onCardClick: (String)->Unit
 ) {
     Card(
         modifier = modifier
             .fillMaxWidth()
             .height(140.dp)
             .padding(8.dp)
-            .clickable { },
+            .clickable { onCardClick(news.url) },
         elevation = 2.dp
     ) {
         Row {

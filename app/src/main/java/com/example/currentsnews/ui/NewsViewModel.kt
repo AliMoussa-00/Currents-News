@@ -8,11 +8,10 @@ import com.example.currentsnews.data.NewsRepository
 import com.example.currentsnews.data.network.toNewsEntity
 import com.example.currentsnews.data.room.toNews
 import com.example.currentsnews.model.News
+import com.example.currentsnews.model.ScreenState
+import com.example.currentsnews.model.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import java.io.IOException
 import javax.inject.Inject
@@ -34,10 +33,11 @@ class NewsViewModel @Inject constructor(
             started = SharingStarted.WhileSubscribed(5_000)
         )
 
-    var url = mutableStateOf("")
-
     var isRefreshing = mutableStateOf(false)
         private set
+
+    private var _uiState = MutableStateFlow(UiState())
+    val uiState: StateFlow<UiState> get() = _uiState
 
     init {
         refreshDatabase()
@@ -60,6 +60,22 @@ class NewsViewModel @Inject constructor(
             }
             isRefreshing.value = false
         }
-
     }
+
+    fun setScreenState(url: String) {
+        _uiState.update {
+            it.copy(
+                screenState = when (it.screenState) {
+                    ScreenState.WebView -> {
+                        ScreenState.List
+                    }
+                    ScreenState.List -> {
+                        ScreenState.WebView
+                    }
+                },
+                url = url
+            )
+        }
+    }
+
 }

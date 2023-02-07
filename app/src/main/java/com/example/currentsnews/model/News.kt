@@ -12,3 +12,12 @@ data class News(
     val url: String=""
 )
 
+data class UiState(
+    val screenState: ScreenState= ScreenState.List,
+    val url: String=""
+)
+
+enum class ScreenState{
+    List,WebView
+}
+
