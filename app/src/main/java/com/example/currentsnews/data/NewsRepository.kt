@@ -9,6 +9,7 @@ import javax.inject.Inject
 
 interface NewsRepository {
     suspend fun getLatestNewsNet(): NewsApi
+    suspend fun searchNews(keyword:String): NewsApi
     fun getLatestRoom(): Flow<List<NewsEntity>>
     suspend fun insertToRoom(news: List<NewsEntity>)
 }
@@ -18,6 +19,8 @@ class DefaultRepository @Inject constructor(
     private val newsDao : NewsDao
 ): NewsRepository{
     override suspend fun getLatestNewsNet(): NewsApi = apiService.gitLatestNews()
+
+    override suspend fun searchNews(keyword: String) = apiService.searchNews(keyword)
 
     override fun getLatestRoom(): Flow<List<NewsEntity>> = newsDao.getLatestNewsRoom()
 

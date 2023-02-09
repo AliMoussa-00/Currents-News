@@ -7,10 +7,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Card
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Text
-import androidx.compose.material.pullrefresh.PullRefreshIndicator
-import androidx.compose.material.pullrefresh.PullRefreshState
-import androidx.compose.material.pullrefresh.pullRefresh
-import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -31,48 +27,34 @@ import java.util.*
 @Composable
 fun HomeList(
     newsViewModel: NewsViewModel,
+    modifier: Modifier,
 ) {
     val newsList by newsViewModel.latestNews.collectAsState()
 
-    val isRefreshing by newsViewModel.isRefreshing
-    val pullRefreshState = rememberPullRefreshState(
-        refreshing = isRefreshing,
-        onRefresh = { newsViewModel.refreshDatabase() })
-
     NewsList(
+        modifier= modifier,
         latestNews = newsList,
-        isRefreshing = isRefreshing,
-        pullRefreshState = pullRefreshState,
-        onNewsClicked = {newsViewModel.setScreenState(it)}
+        onNewsClicked = {newsViewModel.setScreenState(url = it,isWeb = true)}
     )
 }
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun NewsList(
-    modifier: Modifier = Modifier,
+    modifier: Modifier,
     latestNews: List<News>,
-    isRefreshing: Boolean,
-    pullRefreshState: PullRefreshState,
     onNewsClicked: (String)->Unit
 ) {
-    Box(contentAlignment = Alignment.TopCenter) {
+    Column(modifier = modifier) {
         if (latestNews.isEmpty()) {
             Text(text = "Loading...")
         } else {
-            LazyColumn(
-                modifier = modifier.pullRefresh(pullRefreshState)
-            ) {
+            LazyColumn {
                 items(latestNews) {
                     ListItems(news = it, onCardClick = onNewsClicked)
                 }
             }
-            PullRefreshIndicator(
-                refreshing = isRefreshing,
-                state = pullRefreshState
-            )
         }
-
     }
 }
 
