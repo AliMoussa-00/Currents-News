@@ -31,6 +31,7 @@ object AppModule {
             .baseUrl(baseUrl)
             .build()
             .create(NewsApiService::class.java)
+
     }
 
     @Provides

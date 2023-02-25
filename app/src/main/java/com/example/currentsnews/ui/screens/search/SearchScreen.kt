@@ -23,7 +23,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import com.example.currentsnews.R
 import com.example.currentsnews.ui.NewsViewModel
-import com.example.currentsnews.ui.screens.NewsList
+import com.example.currentsnews.ui.screens.home.NewsList
 
 
 @Composable
@@ -38,7 +38,7 @@ fun SearchScreen(
 
     val searchText by newsViewModel.searchText.collectAsState()
 
-    val searchedNews by newsViewModel.searchedNews.collectAsState()
+    val searchedNews by newsViewModel.getSearchedList().collectAsState()
 
     Column(
         modifier = modifier
@@ -49,13 +49,18 @@ fun SearchScreen(
         SearchField(
             searchText = searchText,
             onSearchTextChange = { newsViewModel.onSearchTextChange(it) },
-            submitSearch = { newsViewModel.submitSearch() }
+            submitSearch = {
+                newsViewModel.submitSearch()
+            }
         )
 
         NewsList(
             modifier = modifier,
-            latestNews = searchedNews,
-            onNewsClicked = { newsViewModel.setScreenState(url=it,isWeb = true) }
+            latestNews = searchedNews ,
+            onNewsClicked = { newsViewModel.setScreenState(url=it,isWeb = true)},
+            onBookMarked = {
+                newsViewModel.bookMarkNews(news = it)
+            }
         )
     }
 }

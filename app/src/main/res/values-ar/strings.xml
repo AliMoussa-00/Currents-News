@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">CurrentsNews</string>
+    <string name="home">الرئيسية</string>
+    <string name="search">بحث</string>
+    <string name="bookShelf">Book Shelf</string>
+    <string name="all">الكل</string>
+    <string name="politics">السياسة</string>
+    <string name="finance">التمويل</string>
+    <string name="business">الأعمال</string>
+    <string name="academia">الأكاديميات</string>
+    <string name="technology">التكنولوجيا</string>
+    <string name="health">الصحة</string>
+    <string name="programming">البرمجة</string>
+    <string name="science">العلوم</string>
+    <string name="entertainment">الترفيه</string>
+    <string name="sports">الرياضة</string>
+    <string name="bookMarked">الاخبار المحفوظة</string>
+    <string name="share">مشاركة الأخبار</string>
+    <string name="setting">الإعدادات</string>
+    <string name="theme">Theme</string>
+    <string name="defaulTheme">افتراضي</string>
+    <string name="darkTheme">داكن</string>
+    <string name="ar">العربية</string>
+    <string name="fr">Français</string>
+    <string name="en">English</string>
+    <string name="language">اللغة</string>
+    <string name="ok">حسنًا</string>
+    <string name="latestNews">آخر الأخبار</string>
+    <string name="see_more">مشاهدة المزيد</string>
+
+
+</resources>

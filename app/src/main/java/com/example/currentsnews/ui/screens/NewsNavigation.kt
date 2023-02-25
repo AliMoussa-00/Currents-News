@@ -1,14 +1,20 @@
 package com.example.currentsnews.ui.screens
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.FastOutLinearInEasing
+import androidx.compose.animation.core.LinearOutSlowInEasing
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.expandHorizontally
+import androidx.compose.animation.shrinkHorizontally
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material.BottomNavigation
-import androidx.compose.material.BottomNavigationItem
-import androidx.compose.material.Icon
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
@@ -48,14 +54,30 @@ fun NewsBottomNavigationBar(
     currentTab: ScreenType
 ){
     BottomNavigation(
-        modifier = modifier.fillMaxWidth()
+        modifier = modifier.fillMaxWidth(),
+        backgroundColor = MaterialTheme.colors.background,
     ) {
         for (item in navList){
             BottomNavigationItem(
                 selected =(currentTab == item.screenType),
                 onClick = { onTabPressed(item.screenType) },
                 icon ={
-                    Icon(imageVector = item.icon, contentDescription = stringResource(id = item.title))
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(imageVector = item.icon, contentDescription = stringResource(id = item.title))
+                        AnimatedVisibility(
+                            visible = (currentTab == item.screenType),
+                            enter = expandHorizontally(
+                                animationSpec = tween(durationMillis = 150, easing = LinearOutSlowInEasing)
+                            ),
+                            exit = shrinkHorizontally(
+                                animationSpec = tween(durationMillis = 150, easing = FastOutLinearInEasing)
+                            )
+                        ) {
+                            Text(text = stringResource(id = item.title))
+                        }
+                    }
                 }
             )
         }

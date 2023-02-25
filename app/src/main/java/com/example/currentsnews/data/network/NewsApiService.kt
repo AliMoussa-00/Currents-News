@@ -5,9 +5,14 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface NewsApiService {
-    @GET("latest-news?apiKey=$API_KEY")
+    @GET("latest-news?language=en&apiKey=$API_KEY")
     suspend fun gitLatestNews(): NewsApi
 
-    @GET("search?keywords=keyword&apiKey=$API_KEY")
+    @GET("search?category=myCategory&page_size=200&apiKey=$API_KEY")
+    suspend fun getNewsByCategory(@Query(value = "myCategory") myCategory:String): NewsApi
+
+    @GET("search?keywords=keyword&page_size=200&apiKey=$API_KEY")
     suspend fun searchNews(@Query(value = "keyword") keyword: String): NewsApi
+
+
 }

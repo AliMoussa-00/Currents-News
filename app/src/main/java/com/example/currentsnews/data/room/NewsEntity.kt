@@ -6,7 +6,7 @@ import com.example.currentsnews.model.News
 
 @Entity(tableName = "news")
 class NewsEntity(
-    @PrimaryKey val id: String,
+    @PrimaryKey val id:String,
     val author: String,
     val category: String,
     val description: String,
@@ -14,20 +14,22 @@ class NewsEntity(
     val language: String,
     val published: String,
     val title: String,
-    val url: String
+    val url: String,
+    val bookMarked: Boolean = false
     )
 
 
 fun NewsEntity.toNews(): News{
     return News(
-        id = id,
+        id=id,
         author=author,
-        category = category.split(","),
+        category = category,
         description= description,
         image=image,
         language= language,
         published = published,
         title= title,
-        url= url
+        url= url,
+        bookMarked = bookMarked
     )
 }

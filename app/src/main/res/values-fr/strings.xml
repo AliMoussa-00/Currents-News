@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">CurrentsNews</string>
+    <string name="home">Accueil</string>
+    <string name="search">recherche</string>
+    <string name="bookShelf">Bibliothèque</string>
+    <string name="all">Tout</string>
+    <string name="politics">Politique</string>
+    <string name="finance">Finance</string>
+    <string name="business">Entreprise</string>
+    <string name="academia">Milieu universitaire</string>
+    <string name="technology">Technologie</string>
+    <string name="health">Santé</string>
+    <string name="programming">Programmation</string>
+    <string name="science">Science</string>
+    <string name="entertainment">Science</string>
+    <string name="sports">Sports</string>
+    <string name="bookMarked">enregistrées</string>
+    <string name="share">Partager des nouvelles</string>
+    <string name="setting">Paramètres</string>
+    <string name="theme">Thème</string>
+    <string name="defaulTheme">Défaut</string>
+    <string name="darkTheme">Mode sombre</string>
+    <string name="ar">العربية</string>
+    <string name="fr">Français</string>
+    <string name="en">English</string>
+    <string name="language">Langue</string>
+    <string name="ok">D'accord</string>
+    <string name="latestNews">Dernières nouvelles</string>
+    <string name="see_more">Voir plus</string>
+</resources>
