@@ -1,8 +1,8 @@
 <resources>
-    <string name="app_name">CurrentsNews</string>
+    <string name="app_name" translatable="false">CurrentsNews</string>
     <string name="home">home</string>
     <string name="search">search</string>
-    <string name="bookShelf">Book Shelf</string>
+    <string name="bookShelf">saved news</string>
     <string name="all">All</string>
     <string name="politics">Politics</string>
     <string name="finance">Finance</string>
@@ -20,11 +20,11 @@
     <string name="theme">Theme</string>
     <string name="defaulTheme">Default</string>
     <string name="darkTheme">Dark</string>
-    <string name="ar">العربية</string>
-    <string name="fr">Français</string>
-    <string name="en">English</string>
+    <string name="ar" translatable="false">العربية</string>
+    <string name="fr" translatable="false">Français</string>
+    <string name="en" translatable="false">English</string>
     <string name="language">Language</string>
-    <string name="ok">Ok</string>
+    <string name="ok">OK</string>
     <string name="latestNews">Latest News</string>
     <string name="see_more">See More</string>
 

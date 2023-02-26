@@ -22,6 +22,8 @@ import com.example.currentsnews.ui.screens.settings.SettingsDialog
 @Composable
 fun NewsScreen(
     newsViewModel: NewsViewModel = hiltViewModel(),
+    selectedLanguage: NewsLanguage,
+    setLanguage:(NewsLanguage)->Unit
 ) {
     val uiState by newsViewModel.uiState.collectAsState()
 
@@ -77,10 +79,10 @@ fun NewsScreen(
         SettingsDialog(
             openDialog = openDialog.value,
             closeDialog = { openDialog.value = ! openDialog.value },
-            selectedLanguage = NewsLanguage.En,
             selectedTheme = NewsTheme.Light,
-            onSelectLanguage = {},
-            onSelectTheme = {}
+            onSelectTheme = {},
+            selectedLanguage = selectedLanguage,
+            setLanguage = setLanguage
         )
     }
 

@@ -195,5 +195,4 @@ class NewsViewModel @Inject constructor(
                 started = SharingStarted.WhileSubscribed(3_000)
             )
     }
-
 }

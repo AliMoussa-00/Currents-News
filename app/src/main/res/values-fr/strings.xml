@@ -3,7 +3,7 @@
     <string name="app_name">CurrentsNews</string>
     <string name="home">Accueil</string>
     <string name="search">recherche</string>
-    <string name="bookShelf">Bibliothèque</string>
+    <string name="bookShelf">enregistrées</string>
     <string name="all">Tout</string>
     <string name="politics">Politique</string>
     <string name="finance">Finance</string>
@@ -25,7 +25,7 @@
     <string name="fr">Français</string>
     <string name="en">English</string>
     <string name="language">Langue</string>
-    <string name="ok">D'accord</string>
+    <string name="ok">D\'accord</string>
     <string name="latestNews">Dernières nouvelles</string>
     <string name="see_more">Voir plus</string>
 </resources>

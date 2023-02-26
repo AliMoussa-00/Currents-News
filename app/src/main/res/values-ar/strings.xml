@@ -3,7 +3,7 @@
     <string name="app_name">CurrentsNews</string>
     <string name="home">الرئيسية</string>
     <string name="search">بحث</string>
-    <string name="bookShelf">Book Shelf</string>
+    <string name="bookShelf">المحفوظة</string>
     <string name="all">الكل</string>
     <string name="politics">السياسة</string>
     <string name="finance">التمويل</string>
@@ -28,6 +28,4 @@
     <string name="ok">حسنًا</string>
     <string name="latestNews">آخر الأخبار</string>
     <string name="see_more">مشاهدة المزيد</string>
-
-
 </resources>

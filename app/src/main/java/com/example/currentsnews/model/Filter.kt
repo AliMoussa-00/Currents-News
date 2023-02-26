@@ -10,7 +10,6 @@ enum class Filters(val category: Int) {
     Academia(R.string.academia),
     Technology(R.string.technology),
     Health(R.string.health),
-    Opinion(R.string.opinion),
     Programming(R.string.programming),
     Science(R.string.science),
     Entertainment(R.string.entertainment),
@@ -29,14 +28,8 @@ val categoryFilters: List<Filters> = listOf(
     Filters.Academia,
     Filters.Technology,
     Filters.Health,
-    Filters.Opinion,
     Filters.Programming,
     Filters.Science,
     Filters.Entertainment,
     Filters.Sports
-// Lifestyle
-// company
-// general
-// computer
-// stockholm
 )

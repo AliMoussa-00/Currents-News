@@ -19,10 +19,10 @@ import com.example.currentsnews.R
 fun SettingsDialog(
     openDialog: Boolean,
     closeDialog: ()->Unit,
-    selectedLanguage: NewsLanguage,
     selectedTheme: NewsTheme,
-    onSelectLanguage: () -> Unit,
-    onSelectTheme: () -> Unit
+    onSelectTheme: () -> Unit,
+    selectedLanguage: NewsLanguage,
+    setLanguage: (NewsLanguage) -> Unit
 ){
     if(openDialog){
         Dialog(
@@ -31,7 +31,9 @@ fun SettingsDialog(
                 DialogContent(
                     selectedLanguage = selectedLanguage,
                     selectedTheme = selectedTheme,
-                    onSelectLanguage = { onSelectLanguage() },
+                    selectLanguage = {
+                        setLanguage(it)
+                    },
                     onSelectTheme = {onSelectTheme()},
                     closeDialog= closeDialog
                 )
@@ -45,7 +47,7 @@ fun DialogContent(
     modifier: Modifier = Modifier,
     selectedLanguage: NewsLanguage,
     selectedTheme: NewsTheme,
-    onSelectLanguage: () -> Unit,
+    selectLanguage: (NewsLanguage) -> Unit,
     onSelectTheme: () -> Unit,
     closeDialog: () -> Unit
 ){
@@ -72,7 +74,7 @@ fun DialogContent(
 
             Divider()
             Text(text = stringResource(id = R.string.language))
-            ChooseLanguage(selectedLanguage = selectedLanguage, onSelectLanguage = onSelectLanguage)
+            ChooseLanguage(selectedLanguage = selectedLanguage, selectLanguage = selectLanguage)
 
             Divider()
             OutlinedButton(
@@ -123,7 +125,7 @@ fun ChooseLanguage(
     modifier: Modifier = Modifier,
     radioOptions: List<NewsLanguage> = listOf(NewsLanguage.En,NewsLanguage.Fr,NewsLanguage.Arab),
     selectedLanguage: NewsLanguage,
-    onSelectLanguage: ()->Unit
+    selectLanguage: (NewsLanguage)->Unit
 ){
     Column {
 
@@ -133,14 +135,14 @@ fun ChooseLanguage(
                     .fillMaxWidth()
                     .selectable(
                         selected = selectedLanguage == it,
-                        onClick = { onSelectLanguage() }
+                        onClick = { selectLanguage(it) }
                     ),
                 verticalAlignment = Alignment.CenterVertically
             ) {
 
                 RadioButton(
                     selected = selectedLanguage == it  ,
-                    onClick = { onSelectLanguage() }
+                    onClick = { selectLanguage(it) }
                 )
 
                 Text(text = stringResource(id = it.textResource))
@@ -159,3 +161,4 @@ enum class NewsLanguage(val textResource: Int){
     Fr(textResource = R.string.fr),
     En(textResource = R.string.en)
 }
+
