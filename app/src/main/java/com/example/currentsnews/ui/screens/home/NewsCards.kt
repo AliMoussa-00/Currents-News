@@ -1,5 +1,6 @@
 package com.example.currentsnews.ui.screens.home
 
+import android.content.Context
 import androidx.compose.animation.*
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.Spring
@@ -174,7 +175,7 @@ fun ItemContents(
                     contentDescription = null,
                     tint = Color.DarkGray
                 )
-                Text(text = calculateDate(news.published), fontSize = 14.sp)
+                Text(text = calculateDate(news.published, LocalContext.current), fontSize = 14.sp)
             }
 
         } else {
@@ -199,7 +200,7 @@ fun ItemContents(
                     contentDescription = null,
                     tint = Color.DarkGray
                 )
-                Text(text = calculateDate(news.published), fontSize = 14.sp)
+                Text(text = calculateDate(news.published, LocalContext.current), fontSize = 14.sp)
 
                 Spacer(modifier = Modifier.weight(1f))
 
@@ -248,21 +249,23 @@ fun TrailingButtons(
 }
 
 
-fun calculateDate(dateString: String): String {
+fun calculateDate(dateString: String,context: Context): String {
     val dateFormatter = SimpleDateFormat("yyyy-MM-dd HH:mm:ss Z", Locale.getDefault())
     val publishedDate = dateFormatter.parse(dateString)
     val currentTime = Calendar.getInstance().timeInMillis
     val timePassed = currentTime - publishedDate.time
 
-    val sec = timePassed / 1000
-    val min = sec / 60
-    val h = min / 60
-    val d = h / 24
+    val sec = (timePassed / 1000).toInt()
+    val min = (sec / 60)
+    val h = (min / 60)
+    val d = (h / 24)
 
-    return when {
-        d > 0 -> "$d days ago"
-        h > 0 -> "$h h ago"
-        min > 0 -> "$min min ago"
-        else -> "$sec sec ago"
+  return when {
+        d > 0 -> context.resources.getQuantityString(R.plurals.days_passed,d,d)
+        h > 0 -> context.resources.getQuantityString(R.plurals.hours_passed,h,h)
+        min > 0 -> context.resources.getQuantityString(R.plurals.min_passed,min,min)
+        else -> context.resources.getQuantityString(R.plurals.sec_passed,sec,sec)
     }
 }
+
+

@@ -14,16 +14,13 @@ import com.example.currentsnews.ui.screens.bookshelf.ShelfScreen
 import com.example.currentsnews.ui.screens.home.HomeList
 import com.example.currentsnews.ui.screens.home.NewsTopBar
 import com.example.currentsnews.ui.screens.search.SearchScreen
-import com.example.currentsnews.ui.screens.settings.NewsLanguage
 import com.example.currentsnews.ui.screens.settings.NewsTheme
 import com.example.currentsnews.ui.screens.settings.SettingsDialog
 
 
 @Composable
 fun NewsScreen(
-    newsViewModel: NewsViewModel = hiltViewModel(),
-    selectedLanguage: NewsLanguage,
-    setLanguage:(NewsLanguage)->Unit
+    newsViewModel: NewsViewModel = hiltViewModel()
 ) {
     val uiState by newsViewModel.uiState.collectAsState()
 
@@ -81,8 +78,7 @@ fun NewsScreen(
             closeDialog = { openDialog.value = ! openDialog.value },
             selectedTheme = NewsTheme.Light,
             onSelectTheme = {},
-            selectedLanguage = selectedLanguage,
-            setLanguage = setLanguage
+
         )
     }
 

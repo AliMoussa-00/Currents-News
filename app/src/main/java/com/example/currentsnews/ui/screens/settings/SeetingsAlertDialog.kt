@@ -1,5 +1,6 @@
 package com.example.currentsnews.ui.screens.settings
 
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.selectable
@@ -12,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import androidx.core.os.LocaleListCompat
 import com.example.currentsnews.R
 
 
@@ -20,16 +22,14 @@ fun SettingsDialog(
     openDialog: Boolean,
     closeDialog: ()->Unit,
     selectedTheme: NewsTheme,
-    onSelectTheme: () -> Unit,
-    selectedLanguage: NewsLanguage,
-    setLanguage: (NewsLanguage) -> Unit
+    onSelectTheme: () -> Unit
 ){
     if(openDialog){
         Dialog(
             onDismissRequest = { closeDialog()},
             content = {
                 DialogContent(
-                    selectedLanguage = selectedLanguage,
+                    selectedLanguage = getLanguage(),
                     selectedTheme = selectedTheme,
                     selectLanguage = {
                         setLanguage(it)
@@ -162,3 +162,25 @@ enum class NewsLanguage(val textResource: Int){
     En(textResource = R.string.en)
 }
 
+private fun setLanguage(language: NewsLanguage){
+
+    val localOptions = mapOf(
+        NewsLanguage.En to "en",
+        NewsLanguage.Arab to "ar",
+        NewsLanguage.Fr to "fr"
+    )
+    AppCompatDelegate.setApplicationLocales(
+        LocaleListCompat.forLanguageTags(
+            localOptions[language]
+        )
+    )
+}
+
+private fun getLanguage(): NewsLanguage {
+    val selectedLanguage = AppCompatDelegate.getApplicationLocales()
+    return  when (selectedLanguage.toLanguageTags()){
+        "ar"-> NewsLanguage.Arab
+        "fr" -> NewsLanguage.Fr
+        else -> NewsLanguage.En
+    }
+}

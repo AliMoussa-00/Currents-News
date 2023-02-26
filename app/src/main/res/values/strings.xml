@@ -28,5 +28,25 @@
     <string name="latestNews">Latest News</string>
     <string name="see_more">See More</string>
 
+    <plurals name="days_passed">
+        <item quantity="one">1 day ago</item>
+        <item quantity="other">%d days ago</item>
+        <item quantity="many">%d days ago</item>
+    </plurals>
+
+    <plurals name="hours_passed">
+        <item quantity="one">1 hr ago</item>
+        <item quantity="other">%d hrs ago</item>
+        <item quantity="many">%d hrs ago</item>
+    </plurals>
+    <plurals name="min_passed">
+        <item quantity="one">%d min ago</item>
+        <item quantity="other">%d min ago</item>
+    </plurals>
+
+    <plurals name="sec_passed">
+        <item quantity="one">%d sec ago</item>
+        <item quantity="other">%d sec ago</item>
+    </plurals>
 
 </resources>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">CurrentsNews</string>
     <string name="home">Accueil</string>
     <string name="search">recherche</string>
@@ -28,4 +28,24 @@
     <string name="ok">D\'accord</string>
     <string name="latestNews">Dernières nouvelles</string>
     <string name="see_more">Voir plus</string>
+
+    <plurals name="days_passed">
+        <item quantity="one" tools:ignore="ImpliedQuantity">1 jour</item>
+        <item quantity="many">%d jours</item>
+        <item quantity="other">%d jours</item>
+    </plurals>
+    <plurals name="hours_passed">
+        <item quantity="one" tools:ignore="ImpliedQuantity">1 heure</item>
+        <item quantity="other">%d hr</item>
+        <item quantity="many">%d hrs</item>
+    </plurals>
+    <plurals name="min_passed" tools:ignore="MissingQuantity">
+        <item quantity="one">%d min</item>
+        <item quantity="other">%d min</item>
+    </plurals>
+
+    <plurals name="sec_passed" tools:ignore="MissingQuantity">
+        <item quantity="one">%d sec</item>
+        <item quantity="other">%d sec</item>
+    </plurals>
 </resources>

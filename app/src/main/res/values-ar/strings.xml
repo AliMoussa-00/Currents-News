@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingQuantity">
     <string name="app_name">CurrentsNews</string>
     <string name="home">الرئيسية</string>
     <string name="search">بحث</string>
@@ -28,4 +28,29 @@
     <string name="ok">حسنًا</string>
     <string name="latestNews">آخر الأخبار</string>
     <string name="see_more">مشاهدة المزيد</string>
+
+    <plurals name="days_passed" tools:ignore="MissingQuantity">
+        <item quantity="one">قبل يوم واحد</item>
+        <item quantity="few">قبل %d أيام</item>
+        <item quantity="many">قبل %d يومًا</item>
+        <item quantity="other">قبل %d يومًا</item>
+    </plurals>
+    <plurals name="hours_passed" tools:ignore="MissingQuantity">
+        <item quantity="one">قبل ساعة واحدة</item>
+        <item quantity="few">قبل %d ساعات</item>
+        <item quantity="many">قبل %d ساعة</item>
+        <item quantity="other">قبل %d ساعة</item>
+    </plurals>
+    <plurals name="min_passed">
+        <item quantity="one">%d دقيقة مضت</item>
+        <item quantity="few">%d دقائق مضت</item>
+        <item quantity="many">%d دقيقة مضت</item>
+        <item quantity="other">%d دقيقة مضت</item>
+    </plurals>
+    <plurals name="sec_passed">
+        <item quantity="one">%d ثانية مضت</item>
+        <item quantity="few">%d ثوانٍ مضت</item>
+        <item quantity="many">%d ثانية مضت</item>
+        <item quantity="other">%d ثانية مضت</item>
+    </plurals>
 </resources>
