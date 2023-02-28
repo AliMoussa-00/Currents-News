@@ -1,5 +1,6 @@
 package com.example.currentsnews.data.room
 
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.room.*
 import kotlinx.coroutines.flow.Flow
 
@@ -13,4 +14,7 @@ interface NewsDao {
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
     suspend fun bookMarkNews(newsEntity: NewsEntity)
+
+    @Query("DELETE FROM news WHERE language <> :myLanguages  ")
+    suspend fun deleteNewsInOtherLanguage(myLanguages: String= AppCompatDelegate.getApplicationLocales().toLanguageTags())
 }

@@ -22,7 +22,8 @@ fun SettingsDialog(
     openDialog: Boolean,
     closeDialog: ()->Unit,
     selectedTheme: NewsTheme,
-    onSelectTheme: () -> Unit
+    onSelectTheme: () -> Unit,
+    resetLanguage: ()->Unit
 ){
     if(openDialog){
         Dialog(
@@ -33,6 +34,7 @@ fun SettingsDialog(
                     selectedTheme = selectedTheme,
                     selectLanguage = {
                         setLanguage(it)
+                        resetLanguage()
                     },
                     onSelectTheme = {onSelectTheme()},
                     closeDialog= closeDialog

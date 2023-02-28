@@ -61,138 +61,152 @@ class NewsViewModel @Inject constructor(
             started = SharingStarted.WhileSubscribed(5_000)
         )
 
-    // ----------------------------------
-    // setting screen state: listScreen or webScreen
-    // ----------------------------------
-    fun setScreenState(url: String, isWeb: Boolean = false) {
-        _uiState.update {
-            it.copy(
-                screenState = if (isWeb) ScreenState.WebView else ScreenState.List,
-                url = url
-            )
+fun resetListNews() {
+    refreshDatabase()
+    deleteNewsInOtherLanguages()
+}
+private fun deleteNewsInOtherLanguages() {
+    viewModelScope.launch {
+        try {
+            repository.deleteNewsInOtherLanguages()
+        } catch (e: IOException) {
+            Log.e("TAG", "Deleting news in different languages: ${e.localizedMessage}")
         }
     }
+}
 
-    // ----------------------------------
-    // setting screen type : Home, Search, Saved
-    // ----------------------------------
-    fun setScreenType(screenType: ScreenType) {
-        _uiState.update {
-            it.copy(
-                screenType = screenType
-            )
+// ----------------------------------
+// setting screen state: listScreen or webScreen
+// ----------------------------------
+fun setScreenState(url: String, isWeb: Boolean = false) {
+    _uiState.update {
+        it.copy(
+            screenState = if (isWeb) ScreenState.WebView else ScreenState.List,
+            url = url
+        )
+    }
+}
+
+// ----------------------------------
+// setting screen type : Home, Search, Saved
+// ----------------------------------
+fun setScreenType(screenType: ScreenType) {
+    _uiState.update {
+        it.copy(
+            screenType = screenType
+        )
+    }
+}
+
+// ----------------------------------
+// setting the search Field
+// ----------------------------------
+private var _searchText = MutableStateFlow("")
+val searchText = _searchText.asStateFlow()
+
+fun onSearchTextChange(text: String) {
+    _searchText.value = text
+}
+
+fun submitSearch() {
+    viewModelScope.launch {
+        try {
+            val searchNewsNet =
+                repository.searchNews(_searchText.value).news.map { it.toNewsEntity() }
+
+            repository.insertToRoom(searchNewsNet)
+        } catch (e: IOException) {
+            Log.e("TAG", "Submitting Search ${e.localizedMessage}")
         }
     }
+}
 
-    // ----------------------------------
-    // setting the search Field
-    // ----------------------------------
-    private var _searchText = MutableStateFlow("")
-    val searchText = _searchText.asStateFlow()
+fun getSearchedList(): StateFlow<List<News>> {
 
-    fun onSearchTextChange(text: String) {
-        _searchText.value = text
-    }
-
-    fun submitSearch() {
-        viewModelScope.launch {
-            try {
-                val searchNewsNet =
-                    repository.searchNews(_searchText.value).news.map { it.toNewsEntity() }
-
-                repository.insertToRoom(searchNewsNet)
-            } catch (e: IOException) {
-                Log.e("TAG", "Submitting Search ${e.localizedMessage}")
-            }
+    return latestNews.map { newsList ->
+        newsList.filter {
+            it.title.contains(_searchText.value) || it.description.contains(_searchText.value)
         }
     }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(1_000),
+            initialValue = latestNews.value
+        )
+}
 
-    fun getSearchedList(): StateFlow<List<News>> {
+// ----------------------------------
+// Setting the category
+// ----------------------------------
+fun setCategory(filters: Filters) {
+    _uiState.update {
+        it.copy(
+            category = filters
+        )
+    }
+    setNewsByCategory()
+}
 
-        return latestNews.map { newsList ->
-                newsList.filter {
-                    it.title.contains(_searchText.value) || it.description.contains(_searchText.value)
+// ----------------------------------
+// Setting & Getting News by Category
+// ----------------------------------
+private fun setNewsByCategory() {
+    viewModelScope.launch {
+        try {
+            val news: List<NewsEntity> = repository
+                .getNewsByCategoryNet(_uiState.value.category.toFilterLowerCase())
+                .news
+                .map {
+                    it.toNewsEntity()
                 }
-            }
-                .stateIn(
-                    scope = viewModelScope,
-                    started = SharingStarted.WhileSubscribed(1_000),
-                    initialValue = latestNews.value
-                )
-    }
-
-    // ----------------------------------
-    // Setting the category
-    // ----------------------------------
-    fun setCategory(filters: Filters) {
-        _uiState.update {
-            it.copy(
-                category = filters
-            )
-        }
-        setNewsByCategory()
-    }
-
-    // ----------------------------------
-    // Setting & Getting News by Category
-    // ----------------------------------
-    private fun setNewsByCategory() {
-        viewModelScope.launch {
-             try {
-                val news: List<NewsEntity> = repository
-                    .getNewsByCategoryNet(_uiState.value.category.toFilterLowerCase())
-                    .news
-                    .map {
-                        it.toNewsEntity()
-                    }
-                 repository.insertToRoom(news = news)
-            } catch (e: IOException) {
-                Log.e("TAG", "Getting News by category: ${e.localizedMessage}")
-            }
+            repository.insertToRoom(news = news)
+        } catch (e: IOException) {
+            Log.e("TAG", "Getting News by category: ${e.localizedMessage}")
         }
     }
+}
 
-    fun getNewsByCategory(category: Filters): StateFlow<List<News>> {
+fun getNewsByCategory(category: Filters): StateFlow<List<News>> {
 
-        val newsByCategory: StateFlow<List<News>> = latestNews.map { newsList ->
-            newsList.filter {
-                it.category.contains(category.toFilterLowerCase())
-            }
-        }
-            .stateIn(
-                scope = viewModelScope,
-                initialValue = emptyList<News>(),
-                started = SharingStarted.WhileSubscribed(5_000)
-            )
-
-
-        return newsByCategory
-    }
-
-    // ----------------------------------
-    // Setting & Getting bookMarkedNews
-    // ----------------------------------
-
-    fun bookMarkNews(news: News) {
-        viewModelScope.launch {
-            try {
-                repository.bookMarkNews(news.toNewsEntity())
-            } catch (e: IOException) {
-                Log.e("CATCH", "bookMarkingNews: ${e.localizedMessage}")
-            }
+    val newsByCategory: StateFlow<List<News>> = latestNews.map { newsList ->
+        newsList.filter {
+            it.category.contains(category.toFilterLowerCase())
         }
     }
+        .stateIn(
+            scope = viewModelScope,
+            initialValue = emptyList<News>(),
+            started = SharingStarted.WhileSubscribed(5_000)
+        )
 
-    fun getBookMarkedNEws(): StateFlow<List<News>> {
-        return latestNews.map { listNews ->
-            listNews.filter {
-                it.bookMarked
-            }
+
+    return newsByCategory
+}
+
+// ----------------------------------
+// Setting & Getting bookMarkedNews
+// ----------------------------------
+
+fun bookMarkNews(news: News) {
+    viewModelScope.launch {
+        try {
+            repository.bookMarkNews(news.toNewsEntity())
+        } catch (e: IOException) {
+            Log.e("CATCH", "bookMarkingNews: ${e.localizedMessage}")
         }
-            .stateIn(
-                scope = viewModelScope,
-                initialValue = emptyList(),
-                started = SharingStarted.WhileSubscribed(3_000)
-            )
     }
+}
+
+fun getBookMarkedNEws(): StateFlow<List<News>> {
+    return latestNews.map { listNews ->
+        listNews.filter {
+            it.bookMarked
+        }
+    }
+        .stateIn(
+            scope = viewModelScope,
+            initialValue = emptyList(),
+            started = SharingStarted.WhileSubscribed(3_000)
+        )
+}
 }

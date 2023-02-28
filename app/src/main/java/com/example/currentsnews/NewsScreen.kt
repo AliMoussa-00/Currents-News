@@ -78,7 +78,7 @@ fun NewsScreen(
             closeDialog = { openDialog.value = ! openDialog.value },
             selectedTheme = NewsTheme.Light,
             onSelectTheme = {},
-
+            resetLanguage = {newsViewModel.resetListNews()}
         )
     }
 
