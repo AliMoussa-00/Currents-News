@@ -15,6 +15,6 @@ interface NewsDao {
     @Update(onConflict = OnConflictStrategy.REPLACE)
     suspend fun bookMarkNews(newsEntity: NewsEntity)
 
-    @Query("DELETE FROM news WHERE language <> :myLanguages  ")
+    @Query("DELETE FROM news WHERE language <> :myLanguages AND bookMarked = 0 ")
     suspend fun deleteNewsInOtherLanguage(myLanguages: String= AppCompatDelegate.getApplicationLocales().toLanguageTags())
 }

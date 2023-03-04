@@ -2,6 +2,7 @@ package com.example.currentsnews
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -16,21 +17,25 @@ import com.example.currentsnews.ui.screens.home.NewsTopBar
 import com.example.currentsnews.ui.screens.search.SearchScreen
 import com.example.currentsnews.ui.screens.settings.NewsTheme
 import com.example.currentsnews.ui.screens.settings.SettingsDialog
+import kotlinx.coroutines.launch
 
 
 @Composable
 fun NewsScreen(
-    newsViewModel: NewsViewModel = hiltViewModel()
+    newsViewModel: NewsViewModel = hiltViewModel(),
 ) {
     val uiState by newsViewModel.uiState.collectAsState()
 
-    val openDialog =remember{ mutableStateOf(false) }
+    val openDialog = remember { mutableStateOf(false) }
+
+    val lazyListState = rememberLazyListState()
+    val coroutineScope = rememberCoroutineScope()
 
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
         NewsTopBar(
-            onClickSetting = {openDialog.value = !openDialog.value}
+            onClickSetting = { openDialog.value = !openDialog.value }
         )
 
         if (uiState.screenState == ScreenState.List) {
@@ -39,13 +44,15 @@ fun NewsScreen(
                     HomeList(
                         newsViewModel = newsViewModel,
                         modifier = Modifier.weight(1f),
-                        uiState = uiState
+                        uiState = uiState,
+                        lazyListState = lazyListState
                     )
                 }
                 ScreenType.SEARCH -> {
                     SearchScreen(
                         modifier = Modifier.weight(1f),
                         newsViewModel = newsViewModel,
+                        lazyListState = lazyListState,
                         backHandler = {
                             newsViewModel.setScreenState("")
                             newsViewModel.setScreenType(ScreenType.HOME)
@@ -56,6 +63,7 @@ fun NewsScreen(
                     ShelfScreen(
                         modifier = Modifier.weight(1f),
                         newsViewModel = newsViewModel,
+                        lazyListState = lazyListState,
                         backHandler = {
                             newsViewModel.setScreenType(ScreenType.HOME)
                         }
@@ -69,16 +77,21 @@ fun NewsScreen(
         }
 
         NewsBottomNavigationBar(
-            onTabPressed = { newsViewModel.setScreenType(it) },
+            onTabPressed = {
+                newsViewModel.setScreenType(it)
+                coroutineScope.launch {
+                    lazyListState.animateScrollToItem(0)
+                }
+            },
             currentTab = uiState.screenType
         )
 
         SettingsDialog(
             openDialog = openDialog.value,
-            closeDialog = { openDialog.value = ! openDialog.value },
+            closeDialog = { openDialog.value = !openDialog.value },
             selectedTheme = NewsTheme.Light,
             onSelectTheme = {},
-            resetLanguage = {newsViewModel.resetListNews()}
+            resetLanguage = { newsViewModel.resetListNews() }
         )
     }
 

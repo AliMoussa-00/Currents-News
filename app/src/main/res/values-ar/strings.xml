@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingQuantity">
-    <string name="app_name">CurrentsNews</string>
+    <string name="app_name">صدى الأخبار</string>
     <string name="home">الرئيسية</string>
     <string name="search">بحث</string>
     <string name="bookShelf">المحفوظة</string>
@@ -22,7 +22,7 @@
     <string name="defaulTheme">افتراضي</string>
     <string name="darkTheme">داكن</string>
     <string name="ar">العربية</string>
-    <string name="fr">Français</string>
+    <string name="de" translatable="false">deutsche</string>
     <string name="en">English</string>
     <string name="language">اللغة</string>
     <string name="ok">حسنًا</string>

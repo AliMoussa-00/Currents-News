@@ -125,7 +125,7 @@ fun ChooseTheme(
 @Composable
 fun ChooseLanguage(
     modifier: Modifier = Modifier,
-    radioOptions: List<NewsLanguage> = listOf(NewsLanguage.En,NewsLanguage.Fr,NewsLanguage.Arab),
+    radioOptions: List<NewsLanguage> = listOf(NewsLanguage.En,NewsLanguage.De,NewsLanguage.Arab),
     selectedLanguage: NewsLanguage,
     selectLanguage: (NewsLanguage)->Unit
 ){
@@ -160,7 +160,7 @@ enum class NewsTheme(val textResource: Int){
 
 enum class NewsLanguage(val textResource: Int){
     Arab(textResource = R.string.ar),
-    Fr(textResource = R.string.fr),
+    De(textResource = R.string.de),
     En(textResource = R.string.en)
 }
 
@@ -169,7 +169,7 @@ private fun setLanguage(language: NewsLanguage){
     val localOptions = mapOf(
         NewsLanguage.En to "en",
         NewsLanguage.Arab to "ar",
-        NewsLanguage.Fr to "fr"
+        NewsLanguage.De to "de"
     )
     AppCompatDelegate.setApplicationLocales(
         LocaleListCompat.forLanguageTags(
@@ -182,7 +182,7 @@ private fun getLanguage(): NewsLanguage {
     val selectedLanguage = AppCompatDelegate.getApplicationLocales()
     return  when (selectedLanguage.toLanguageTags()){
         "ar"-> NewsLanguage.Arab
-        "fr" -> NewsLanguage.Fr
+        "de" -> NewsLanguage.De
         else -> NewsLanguage.En
     }
 }

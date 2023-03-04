@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">CurrentsNews</string>
+    <string name="app_name">News Echo</string>
     <string name="home">home</string>
     <string name="search">search</string>
     <string name="bookShelf">saved news</string>
@@ -21,7 +21,7 @@
     <string name="defaulTheme">Default</string>
     <string name="darkTheme">Dark</string>
     <string name="ar" translatable="false">العربية</string>
-    <string name="fr" translatable="false">Français</string>
+    <string name="de" translatable="false">deutsche</string>
     <string name="en" translatable="false">English</string>
     <string name="language">Language</string>
     <string name="ok">OK</string>

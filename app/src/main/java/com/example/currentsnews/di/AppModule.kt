@@ -4,6 +4,7 @@ import android.app.Application
 import com.example.currentsnews.data.network.NewsApiService
 import com.example.currentsnews.data.room.NewsDao
 import com.example.currentsnews.data.room.NewsDataBase
+import com.example.currentsnews.privateconstants.BASE_URL
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
@@ -18,7 +19,6 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object AppModule {
 
-    private const val baseUrl= "https://api.currentsapi.services/v1/"
 
     @Provides
     @Singleton
@@ -29,7 +29,7 @@ object AppModule {
 
         return Retrofit.Builder()
             .addConverterFactory(MoshiConverterFactory.create(moshi))
-            .baseUrl(baseUrl)
+            .baseUrl(BASE_URL)
             .build()
             .create(NewsApiService::class.java)
 

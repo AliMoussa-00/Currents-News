@@ -4,12 +4,13 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
+import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
-import androidx.compose.material.TextField
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Search
@@ -30,7 +31,8 @@ import com.example.currentsnews.ui.screens.home.NewsList
 fun SearchScreen(
     modifier: Modifier = Modifier,
     newsViewModel: NewsViewModel,
-    backHandler : ()->Unit
+    backHandler : ()->Unit,
+    lazyListState: LazyListState
 ) {
     BackHandler {
         backHandler()
@@ -60,7 +62,8 @@ fun SearchScreen(
             onNewsClicked = { newsViewModel.setScreenState(url=it,isWeb = true)},
             onBookMarked = {
                 newsViewModel.bookMarkNews(news = it)
-            }
+            },
+            lazyListState = lazyListState
         )
     }
 }
@@ -73,7 +76,7 @@ fun SearchField(
 ) {
     val focusManager = LocalFocusManager.current
 
-    TextField(
+    OutlinedTextField(
         modifier = Modifier.fillMaxWidth(),
         value = searchText,
         onValueChange = { onSearchTextChange(it) },

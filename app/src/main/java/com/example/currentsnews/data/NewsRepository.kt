@@ -22,9 +22,9 @@ class DefaultRepository @Inject constructor(
     private val newsDao : NewsDao
 ): NewsRepository{
     override suspend fun getLatestNewsNet(): NewsApi = apiService.gitLatestNews()
-    override suspend fun getNewsByCategoryNet(category: String): NewsApi = apiService.getNewsByCategory(category)
+    override suspend fun getNewsByCategoryNet(category: String): NewsApi = apiService.getNewsByCategory(myCategory = category)
 
-    override suspend fun searchNews(keyword: String) = apiService.searchNews(keyword)
+    override suspend fun searchNews(keyword: String) = apiService.searchNews(keyword = keyword)
 
     override fun getLatestRoom(): Flow<List<NewsEntity>> =  newsDao.getLatestNewsRoom()
 

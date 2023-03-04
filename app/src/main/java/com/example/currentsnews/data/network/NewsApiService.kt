@@ -9,16 +9,25 @@ interface NewsApiService {
     @GET("latest-news?")
     suspend fun gitLatestNews(
         @Query(value = "apiKey") apiKey:String= API_KEY,
-        @Query(value= "language")language:String= AppCompatDelegate.getApplicationLocales().toLanguageTags()
+        @Query(value= "language")language:String= AppCompatDelegate.getApplicationLocales().toLanguageTags(),
+        @Query(value= "page_size") pageSize: Int= 100
     ): NewsApi
 
-    @GET("search?category=myCategory&apiKey=$API_KEY")
+    @GET("search?")
     suspend fun getNewsByCategory(
-        @Query(value = "myCategory") myCategory:String
+        @Query(value = "apiKey") apiKey:String= API_KEY,
+        @Query(value = "myCategory") myCategory:String,
+        @Query(value= "language")language:String= AppCompatDelegate.getApplicationLocales().toLanguageTags(),
+        @Query(value= "page_size") pageSize: Int= 20
     ): NewsApi
 
-    @GET("search?keywords=keyword&apiKey=$API_KEY")
-    suspend fun searchNews(@Query(value = "keyword") keyword: String): NewsApi
+    @GET("search?")
+    suspend fun searchNews(
+        @Query(value = "apiKey") apiKey:String= API_KEY,
+        @Query(value = "keyword") keyword: String,
+        @Query(value= "language")language:String= AppCompatDelegate.getApplicationLocales().toLanguageTags(),
+        @Query(value= "page_size") pageSize: Int= 20
+    ): NewsApi
 
 
 }

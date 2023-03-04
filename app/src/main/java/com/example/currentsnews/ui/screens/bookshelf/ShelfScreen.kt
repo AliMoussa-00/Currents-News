@@ -1,6 +1,7 @@
 package com.example.currentsnews.ui.screens.bookshelf
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -12,7 +13,8 @@ import com.example.currentsnews.ui.screens.home.NewsList
 fun ShelfScreen(
     modifier: Modifier = Modifier,
     newsViewModel: NewsViewModel,
-    backHandler: ()->Unit
+    backHandler: ()->Unit,
+    lazyListState: LazyListState
 ){
     BackHandler {
         backHandler()
@@ -24,6 +26,7 @@ fun ShelfScreen(
         modifier = modifier,
         latestNews = bookMarkedNews,
         onNewsClicked = { newsViewModel.setScreenState(url = it, isWeb = true) },
-        onBookMarked = {newsViewModel.bookMarkNews(it)}
+        onBookMarked = {newsViewModel.bookMarkNews(it)},
+        lazyListState = lazyListState
     )
 }

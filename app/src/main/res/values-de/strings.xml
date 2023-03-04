@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">News Echo</string>
+    <string name="home">Startseite</string>
+    <string name="search">Suche</string>
+    <string name="bookShelf">Gespeicherte</string>
+    <string name="all">Alle</string>
+    <string name="politics">Politik</string>
+    <string name="finance">Finanzen</string>
+    <string name="business">Geschäft</string>
+    <string name="academia">Akademie</string>
+    <string name="technology">Technologie</string>
+    <string name="health">Gesundheit</string>
+    <string name="programming">Programmierung</string>
+    <string name="science">Wissenschaft</string>
+    <string name="entertainment">Unterhaltung</string>
+    <string name="sports">Sport</string>
+    <string name="bookMarked">gespeicherte </string>
+    <string name="share">Nachrichten teilen</string>
+    <string name="setting">Einstellungen</string>
+    <string name="theme">Thema</string>
+    <string name="defaulTheme">Standard</string>
+    <string name="darkTheme">Dunkel</string>
+    <string name="ar" translatable="false">العربية</string>
+    <string name="de" translatable="false">deutsche</string>
+    <string name="en" translatable="false">Englisch</string>
+    <string name="language">Sprache</string>
+    <string name="ok">OK</string>
+    <string name="latestNews">Aktuelle Nachrichten</string>
+    <string name="see_more">Mehr anzeigen</string>
+
+    <plurals name="days_passed">
+        <item quantity="one">Vor 1 Tag</item>
+        <item quantity="other">Vor %d Tagen</item>
+        <item quantity="many">Vor %d Tagen</item>
+    </plurals>
+    <plurals name="hours_passed">
+        <item quantity="one">Vor 1 Std.</item>
+        <item quantity="other">Vor %d Std.</item>
+        <item quantity="many">Vor %d Std.</item>
+    </plurals>
+    <plurals name="min_passed">
+        <item quantity="one">Vor %d Min.</item>
+        <item quantity="other">Vor %d Min.</item>
+    </plurals>
+    <plurals name="sec_passed">
+        <item quantity="one">Vor %d Sek.</item>
+        <item quantity="other">Vor %d Sek.</item>
+    </plurals>
+</resources>

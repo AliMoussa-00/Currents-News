@@ -1,9 +1,6 @@
 package com.example.currentsnews.ui.screens.home
 
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.Composable
@@ -17,7 +14,7 @@ fun NewsTopBar(
     onClickSetting: ()->Unit
 ){
     TopAppBar(
-
+        backgroundColor = MaterialTheme.colors.background,
         title = { Text(text = stringResource(id = R.string.app_name))},
         actions = {
             IconButton(onClick = { onClickSetting() }) {

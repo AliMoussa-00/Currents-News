@@ -114,6 +114,7 @@ fun submitSearch() {
             val searchNewsNet =
                 repository.searchNews(_searchText.value).news.map { it.toNewsEntity() }
 
+            Log.e("TAG","searchNewsNet=${searchNewsNet.size}")
             repository.insertToRoom(searchNewsNet)
         } catch (e: IOException) {
             Log.e("TAG", "Submitting Search ${e.localizedMessage}")

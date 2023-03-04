@@ -34,6 +34,7 @@ fun NewsCard(
     news: News,
     onClickSeeMore: (String) -> Unit,
     onClickMarked: (News) -> Unit,
+    onExpandCard: (Boolean) -> Unit,
 ) {
 
     var isRow by remember { mutableStateOf(true) }
@@ -42,7 +43,10 @@ fun NewsCard(
         modifier = modifier
             .wrapContentHeight()
             .padding(8.dp)
-            .clickable { isRow = !isRow },
+            .clickable {
+                isRow = !isRow
+                onExpandCard(isRow)
+            },
         elevation = 2.dp
     ) {
         Column(
@@ -117,10 +121,14 @@ fun ItemImage(
     imgTitle: String,
     isRow: Boolean = false,
 ) {
-    val sizeModifier: Modifier = if (isRow) Modifier.width(140.dp) else Modifier.fillMaxWidth()
+    val sizeModifier: Modifier =
+        if (isRow) Modifier
+            .width(140.dp)
+            .height(140.dp) else Modifier
+            .fillMaxWidth()
+            .height(180.dp)
 
     val imageModifier: Modifier = sizeModifier
-        .height(140.dp)
         .animateContentSize(
             animationSpec = tween(durationMillis = 450, easing = LinearOutSlowInEasing)
         )
@@ -160,7 +168,7 @@ fun ItemContents(
             .heightIn(min = 140.dp)
             .padding(8.dp)
     ) {
-        
+
         Text(
             text = news.title
         )
@@ -249,7 +257,7 @@ fun TrailingButtons(
 }
 
 
-fun calculateDate(dateString: String,context: Context): String {
+fun calculateDate(dateString: String, context: Context): String {
     val dateFormatter = SimpleDateFormat("yyyy-MM-dd HH:mm:ss Z", Locale.getDefault())
     val publishedDate = dateFormatter.parse(dateString)
     val currentTime = Calendar.getInstance().timeInMillis
@@ -260,11 +268,11 @@ fun calculateDate(dateString: String,context: Context): String {
     val h = (min / 60)
     val d = (h / 24)
 
-  return when {
-        d > 0 -> context.resources.getQuantityString(R.plurals.days_passed,d,d)
-        h > 0 -> context.resources.getQuantityString(R.plurals.hours_passed,h,h)
-        min > 0 -> context.resources.getQuantityString(R.plurals.min_passed,min,min)
-        else -> context.resources.getQuantityString(R.plurals.sec_passed,sec,sec)
+    return when {
+        d > 0 -> context.resources.getQuantityString(R.plurals.days_passed, d, d)
+        h > 0 -> context.resources.getQuantityString(R.plurals.hours_passed, h, h)
+        min > 0 -> context.resources.getQuantityString(R.plurals.min_passed, min, min)
+        else -> context.resources.getQuantityString(R.plurals.sec_passed, sec, sec)
     }
 }
 
