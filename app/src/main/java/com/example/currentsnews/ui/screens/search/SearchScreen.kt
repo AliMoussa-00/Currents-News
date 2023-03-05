@@ -1,5 +1,6 @@
 package com.example.currentsnews.ui.screens.search
 
+import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -40,7 +41,8 @@ fun SearchScreen(
 
     val searchText by newsViewModel.searchText.collectAsState()
 
-    val searchedNews by newsViewModel.getSearchedList().collectAsState()
+    val searchedNews = newsViewModel.searchedList.collectAsState()
+    Log.e("TAG","searchedNews=${searchedNews.value.size}")
 
     Column(
         modifier = modifier
@@ -58,7 +60,7 @@ fun SearchScreen(
 
         NewsList(
             modifier = modifier,
-            latestNews = searchedNews ,
+            latestNews = searchedNews.value ,
             onNewsClicked = { newsViewModel.setScreenState(url=it,isWeb = true)},
             onBookMarked = {
                 newsViewModel.bookMarkNews(news = it)

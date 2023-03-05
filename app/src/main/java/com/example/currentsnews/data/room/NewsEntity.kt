@@ -15,7 +15,8 @@ class NewsEntity(
     val published: String,
     val title: String,
     val url: String,
-    val bookMarked: Boolean = false
+    val bookMarked: Boolean = false,
+
     )
 
 

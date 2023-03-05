@@ -1,6 +1,7 @@
 package com.example.currentsnews.data.network
 
 import com.example.currentsnews.data.room.NewsEntity
+import com.example.currentsnews.model.News
 
 data class NewsApi(
     val status:String,
@@ -21,6 +22,20 @@ data class NewsNetwork(
 
 fun NewsNetwork.toNewsEntity(): NewsEntity {
     return NewsEntity(
+        id=id,
+        author = author,
+        category = category.joinToString(),
+        description = description ?: "null",
+        image = image ?: "null",
+        language = language,
+        published = published,
+        title = title,
+        url = url
+    )
+}
+
+fun NewsNetwork.toNews(): News {
+    return News(
         id=id,
         author = author,
         category = category.joinToString(),

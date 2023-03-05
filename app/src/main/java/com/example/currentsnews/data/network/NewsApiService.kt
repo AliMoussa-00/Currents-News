@@ -24,7 +24,7 @@ interface NewsApiService {
     @GET("search?")
     suspend fun searchNews(
         @Query(value = "apiKey") apiKey:String= API_KEY,
-        @Query(value = "keyword") keyword: String,
+        @Query(value = "keywords") keyword: String,
         @Query(value= "language")language:String= AppCompatDelegate.getApplicationLocales().toLanguageTags(),
         @Query(value= "page_size") pageSize: Int= 20
     ): NewsApi
