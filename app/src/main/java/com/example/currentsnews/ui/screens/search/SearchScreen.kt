@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import com.example.currentsnews.R
 import com.example.currentsnews.ui.NewsViewModel
 import com.example.currentsnews.ui.screens.home.NewsList
+import com.example.currentsnews.ui.screens.utils.ErrorMessage
 
 
 @Composable
@@ -42,7 +43,10 @@ fun SearchScreen(
     val searchText by newsViewModel.searchText.collectAsState()
 
     val searchedNews = newsViewModel.searchedList.collectAsState()
-    Log.e("TAG","searchedNews=${searchedNews.value.size}")
+
+    val isSearching = newsViewModel.isSearching.collectAsState()
+    val isError = newsViewModel.isError.collectAsState()
+    Log.e("TAg","isSearching=$isSearching")
 
     Column(
         modifier = modifier
@@ -58,15 +62,22 @@ fun SearchScreen(
             }
         )
 
-        NewsList(
-            modifier = modifier,
-            latestNews = searchedNews.value ,
-            onNewsClicked = { newsViewModel.setScreenState(url=it,isWeb = true)},
-            onBookMarked = {
-                newsViewModel.bookMarkNews(news = it)
-            },
-            lazyListState = lazyListState
-        )
+        if(isSearching.value || searchedNews.value.isNotEmpty()) {
+            NewsList(
+                modifier = modifier,
+                latestNews = searchedNews.value,
+                onNewsClicked = { newsViewModel.setScreenState(url = it, isWeb = true) },
+                onBookMarked = {
+                    newsViewModel.bookMarkNews(news = it)
+                },
+                lazyListState = lazyListState
+            )
+        }
+        if(isError.value){
+            ErrorMessage {
+                newsViewModel.submitSearch()
+            }
+        }
     }
 }
 

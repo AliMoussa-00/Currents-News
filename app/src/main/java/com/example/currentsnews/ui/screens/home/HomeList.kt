@@ -1,5 +1,6 @@
 package com.example.currentsnews.ui.screens.home
 
+import android.util.Log
 import androidx.compose.animation.*
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -15,6 +16,8 @@ import com.example.currentsnews.model.Filters
 import com.example.currentsnews.model.News
 import com.example.currentsnews.model.UiState
 import com.example.currentsnews.ui.NewsViewModel
+import com.example.currentsnews.ui.screens.utils.ErrorMessage
+import com.example.currentsnews.ui.screens.utils.ShimmerList
 import dev.chrisbanes.snapper.ExperimentalSnapperApi
 import dev.chrisbanes.snapper.LazyListSnapperLayoutInfo
 import dev.chrisbanes.snapper.rememberLazyListSnapperLayoutInfo
@@ -34,13 +37,14 @@ fun HomeList(
     uiState: UiState,
     lazyListState: LazyListState,
 ) {
-
-    val listNews = if (uiState.category == Filters.All) {
+    Log.e("TAG","(uiState.category=${uiState.category}")
+    val listNews by if (uiState.category == Filters.All) {
         newsViewModel.latestNews.collectAsState()
     } else {
         newsViewModel.getNewsByCategory(uiState.category).collectAsState()
     }
 
+    val isLoading by newsViewModel.isLoading.collectAsState()
 
     Column(modifier = modifier) {
         FilterNews(
@@ -50,13 +54,21 @@ fun HomeList(
                 .animateContentSize(tween(300))
                 .height(if (lazyListState.isScroll) 0.dp else 52.dp)
         )
-        NewsList(
-            modifier = modifier,
-            latestNews = listNews.value,
-            onNewsClicked = { newsViewModel.setScreenState(url = it, isWeb = true) },
-            onBookMarked = { newsViewModel.bookMarkNews(news = it) },
-            lazyListState = lazyListState
-        )
+        if (!isLoading && listNews.isEmpty()) {
+
+            ErrorMessage {
+                newsViewModel.setCategory(uiState.category)
+            }
+
+        } else {
+            NewsList(
+                modifier = modifier,
+                latestNews = listNews,
+                onNewsClicked = { newsViewModel.setScreenState(url = it, isWeb = true) },
+                onBookMarked = { newsViewModel.bookMarkNews(news = it) },
+                lazyListState = lazyListState
+            )
+        }
     }
 
 
@@ -76,13 +88,13 @@ fun NewsList(
 ) {
     Column(modifier = modifier) {
 
+
+        val layoutInfo: LazyListSnapperLayoutInfo =
+            rememberLazyListSnapperLayoutInfo(lazyListState)
+
         if (latestNews.isEmpty()) {
-            Text(text = "Loading...")
+            ShimmerList()
         } else {
-
-            val layoutInfo: LazyListSnapperLayoutInfo =
-                rememberLazyListSnapperLayoutInfo(lazyListState)
-
             LazyColumn(
                 state = lazyListState,
                 flingBehavior = rememberSnapperFlingBehavior(lazyListState = lazyListState)

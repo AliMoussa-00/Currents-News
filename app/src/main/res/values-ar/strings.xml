@@ -28,6 +28,8 @@
     <string name="ok">حسنًا</string>
     <string name="latestNews">آخر الأخبار</string>
     <string name="see_more">مشاهدة المزيد</string>
+    <string name="bad_connection">هناك خطب ما</string>
+    <string name="refresh">حدث الشاشة</string>
 
     <plurals name="days_passed" tools:ignore="MissingQuantity">
         <item quantity="one">قبل يوم واحد</item>

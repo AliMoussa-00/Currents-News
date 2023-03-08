@@ -29,10 +29,11 @@ class NewsViewModel @Inject constructor(
     private var _uiState = MutableStateFlow(UiState())
     val uiState: StateFlow<UiState> get() = _uiState
 
+    private var _isLoading = MutableStateFlow(true)
+    val isLoading = _isLoading.asStateFlow()
 
     private fun refreshDatabase() {
         viewModelScope.launch {
-
             try {
                 val news = repository.getLatestNewsNet()
                     .news
@@ -40,10 +41,15 @@ class NewsViewModel @Inject constructor(
                         it.toNewsEntity()
                     }
 
+                if (news.isEmpty()) {
+                    _isLoading.value = false
+                }
+
                 repository.insertToRoom(news)
 
             } catch (e: IOException) {
-                e.localizedMessage?.let { Log.e("TAG", it) }
+                e.localizedMessage?.let { Log.e("TAG", "Refreshing $it") }
+                _isLoading.value = false
             }
         }
     }
@@ -125,12 +131,19 @@ class NewsViewModel @Inject constructor(
     private var _searchList = MutableStateFlow(emptyList<News>())
     val searchedList = _searchList.asStateFlow()
 
+    private var _isSearching = MutableStateFlow(false)
+    val isSearching = _isSearching.asStateFlow()
+    private var _isError = MutableStateFlow(false)
+    val isError = _isError.asStateFlow()
+
     fun onSearchTextChange(text: String) {
         _searchText.value = text
     }
 
     fun submitSearch() {
         _searchList.value = emptyList()
+        _isSearching.value = true
+        _isError.value = false
         viewModelScope.launch {
             try {
                 searchNewsNet.value =
@@ -143,6 +156,8 @@ class NewsViewModel @Inject constructor(
 
             } catch (e: IOException) {
                 Log.e("TAG", "Submitting Search ${e.localizedMessage}")
+                _isSearching.value = false
+                _isError.value = true
             }
         }
     }
@@ -176,7 +191,9 @@ class NewsViewModel @Inject constructor(
     // ----------------------------------
 // Setting & Getting News by Category
 // ----------------------------------
+
     private fun setNewsByCategory() {
+        _isLoading.value = true
         viewModelScope.launch {
             try {
                 val news: List<NewsEntity> = repository
@@ -185,18 +202,25 @@ class NewsViewModel @Inject constructor(
                     .map {
                         it.toNewsEntity()
                     }
+
+                if (news.isEmpty()) {
+                    _isLoading.value = false
+                }
+
                 repository.insertToRoom(news = news)
+
             } catch (e: IOException) {
                 Log.e("TAG", "Getting News by category: ${e.localizedMessage}")
+                _isLoading.value = false
             }
         }
     }
 
     fun getNewsByCategory(category: Filters): StateFlow<List<News>> {
-
-        val newsByCategory: StateFlow<List<News>> = allNews.map { newsList ->
+        return allNews.map { newsList ->
             newsList.filter {
-                it.category.contains(category.toFilterLowerCase())
+                it.category.contains(category.toFilterLowerCase()) &&
+                        it.language == AppCompatDelegate.getApplicationLocales().toLanguageTags()
             }
         }
             .stateIn(
@@ -204,9 +228,6 @@ class NewsViewModel @Inject constructor(
                 initialValue = emptyList<News>(),
                 started = SharingStarted.WhileSubscribed(5_000)
             )
-
-
-        return newsByCategory
     }
 
 // ----------------------------------

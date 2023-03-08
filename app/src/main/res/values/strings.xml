@@ -27,6 +27,8 @@
     <string name="ok">OK</string>
     <string name="latestNews">Latest News</string>
     <string name="see_more">See More</string>
+    <string name="bad_connection">some thing is wrong</string>
+    <string name="refresh">refresh screen</string>
 
     <plurals name="days_passed">
         <item quantity="one">1 day ago</item>

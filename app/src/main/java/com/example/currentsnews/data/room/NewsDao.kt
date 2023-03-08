@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface NewsDao {
-    @Query("SELECT * FROM news WHERE description <> 'null' AND image <>'null' ORDER BY published DESC")
+    @Query("SELECT * FROM news WHERE description <> 'None' AND image <>'None' ORDER BY published DESC")
     fun getLatestNewsRoom(): Flow<List<NewsEntity>>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)

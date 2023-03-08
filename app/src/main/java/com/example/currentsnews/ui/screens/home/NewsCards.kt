@@ -20,7 +20,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.currentsnews.R
@@ -166,11 +165,12 @@ fun ItemContents(
         modifier = modifier
             .fillMaxWidth()
             .heightIn(min = 140.dp)
-            .padding(8.dp)
+            .padding(8.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
 
         Text(
-            text = news.title
+            text = news.title, style = MaterialTheme.typography.h2
         )
         if (!showDetail) {
             Spacer(modifier = Modifier.weight(1f))
@@ -183,20 +183,21 @@ fun ItemContents(
                     contentDescription = null,
                     tint = Color.DarkGray
                 )
-                Text(text = calculateDate(news.published, LocalContext.current), fontSize = 14.sp)
+                Text(
+                    text = calculateDate(news.published, LocalContext.current),
+                    style = MaterialTheme.typography.body2
+                )
             }
 
         } else {
 
-            Text(
-                text = news.description
-            )
+            Text(text = news.description, style = MaterialTheme.typography.body1)
 
             Row(
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                Text(text = news.category)
-                Text(text = news.author)
+                Text(text = news.category, style = MaterialTheme.typography.h3, color = Color.Blue)
+                Text(text = news.author, style = MaterialTheme.typography.h3)
             }
 
             Row(
@@ -208,7 +209,10 @@ fun ItemContents(
                     contentDescription = null,
                     tint = Color.DarkGray
                 )
-                Text(text = calculateDate(news.published, LocalContext.current), fontSize = 14.sp)
+                Text(
+                    text = calculateDate(news.published, LocalContext.current),
+                    style = MaterialTheme.typography.body2
+                )
 
                 Spacer(modifier = Modifier.weight(1f))
 

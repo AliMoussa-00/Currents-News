@@ -11,22 +11,13 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
-import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
-
-
-    val okHttp = OkHttpClient.Builder()
-        .connectTimeout(30, TimeUnit.SECONDS) // set connection timeout
-        .readTimeout(30, TimeUnit.SECONDS) // set read timeout
-        .writeTimeout(30, TimeUnit.SECONDS) // set write timeout
-        .build()
 
     @Provides
     @Singleton
@@ -38,7 +29,6 @@ object AppModule {
         return Retrofit.Builder()
             .addConverterFactory(MoshiConverterFactory.create(moshi))
             .baseUrl(BASE_URL)
-            .client(okHttp)
             .build()
             .create(NewsApiService::class.java)
 
@@ -49,4 +39,7 @@ object AppModule {
     fun provideDatabaseDao(application:Application): NewsDao{
         return NewsDataBase.getDatabase(application).newsDao()
     }
+
+
+
 }

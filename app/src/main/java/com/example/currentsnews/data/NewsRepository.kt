@@ -28,7 +28,6 @@ class DefaultRepository @Inject constructor(
 
     override fun getLatestRoom(): Flow<List<NewsEntity>> =  newsDao.getLatestNewsRoom()
 
-
     override suspend fun insertToRoom(news: List<NewsEntity>) = newsDao.insertListNews(news)
 
     override suspend fun bookMarkNews(newsEntity: NewsEntity) = newsDao.bookMarkNews(newsEntity)

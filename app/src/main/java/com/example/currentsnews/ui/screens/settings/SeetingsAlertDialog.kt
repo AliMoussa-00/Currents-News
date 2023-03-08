@@ -1,6 +1,11 @@
 package com.example.currentsnews.ui.screens.settings
 
+import android.app.UiModeManager
+import android.content.Context
+import android.os.Build
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO
+import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.selectable
@@ -10,6 +15,7 @@ import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
@@ -20,24 +26,26 @@ import com.example.currentsnews.R
 @Composable
 fun SettingsDialog(
     openDialog: Boolean,
-    closeDialog: ()->Unit,
-    selectedTheme: NewsTheme,
-    onSelectTheme: () -> Unit,
-    resetLanguage: ()->Unit
-){
-    if(openDialog){
+    closeDialog: () -> Unit,
+    resetLanguage: () -> Unit,
+) {
+
+    val isLightTheme = MaterialTheme.colors.isLight
+    val context = LocalContext.current
+
+    if (openDialog) {
         Dialog(
-            onDismissRequest = { closeDialog()},
+            onDismissRequest = { closeDialog() },
             content = {
                 DialogContent(
                     selectedLanguage = getLanguage(),
-                    selectedTheme = selectedTheme,
+                    selectedTheme = if (isLightTheme) NewsTheme.Light else NewsTheme.Dark,
                     selectLanguage = {
                         setLanguage(it)
                         resetLanguage()
                     },
-                    onSelectTheme = {onSelectTheme()},
-                    closeDialog= closeDialog
+                    onSelectTheme = { setTheme(it, context) },
+                    closeDialog = closeDialog
                 )
             }
         )
@@ -50,9 +58,9 @@ fun DialogContent(
     selectedLanguage: NewsLanguage,
     selectedTheme: NewsTheme,
     selectLanguage: (NewsLanguage) -> Unit,
-    onSelectTheme: () -> Unit,
-    closeDialog: () -> Unit
-){
+    onSelectTheme: (NewsTheme) -> Unit,
+    closeDialog: () -> Unit,
+) {
     Surface(
         shape = RoundedCornerShape(16.dp)
     ) {
@@ -62,11 +70,11 @@ fun DialogContent(
                 .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(16.dp),
 
-        ) {
+            ) {
 
             Text(
                 text = stringResource(id = R.string.setting),
-                style= MaterialTheme.typography.h5
+                style = MaterialTheme.typography.h5
             )
 
             Divider()
@@ -80,8 +88,8 @@ fun DialogContent(
 
             Divider()
             OutlinedButton(
-                onClick = {closeDialog()},
-                modifier= Modifier.align(Alignment.End),
+                onClick = { closeDialog() },
+                modifier = Modifier.align(Alignment.End),
                 border = null
             ) {
                 Text(text = stringResource(id = R.string.ok))
@@ -92,28 +100,28 @@ fun DialogContent(
 
 @Composable
 fun ChooseTheme(
-    modifier: Modifier= Modifier,
-    radioOptions: List<NewsTheme> = listOf(NewsTheme.Dark,NewsTheme.Light),
+    modifier: Modifier = Modifier,
+    radioOptions: List<NewsTheme> = listOf(NewsTheme.Light, NewsTheme.Dark),
     selectedTheme: NewsTheme,
-    onSelectTheme: ()->Unit
+    onSelectTheme: (NewsTheme) -> Unit,
 
-){
+    ) {
     Column {
 
         radioOptions.forEach {
             Row(
-                modifier= modifier
+                modifier = modifier
                     .fillMaxWidth()
                     .selectable(
                         selected = selectedTheme == it,
-                        onClick = { onSelectTheme() }
+                        onClick = { onSelectTheme(it) }
                     ),
                 verticalAlignment = Alignment.CenterVertically
             ) {
 
                 RadioButton(
-                    selected = selectedTheme == it  ,
-                    onClick = { onSelectTheme() }
+                    selected = selectedTheme == it,
+                    onClick = { onSelectTheme(it) }
                 )
 
                 Text(text = stringResource(id = it.textResource))
@@ -125,15 +133,15 @@ fun ChooseTheme(
 @Composable
 fun ChooseLanguage(
     modifier: Modifier = Modifier,
-    radioOptions: List<NewsLanguage> = listOf(NewsLanguage.En,NewsLanguage.De,NewsLanguage.Arab),
+    radioOptions: List<NewsLanguage> = listOf(NewsLanguage.En, NewsLanguage.De, NewsLanguage.Arab),
     selectedLanguage: NewsLanguage,
-    selectLanguage: (NewsLanguage)->Unit
-){
+    selectLanguage: (NewsLanguage) -> Unit,
+) {
     Column {
 
         radioOptions.forEach {
             Row(
-                modifier= modifier
+                modifier = modifier
                     .fillMaxWidth()
                     .selectable(
                         selected = selectedLanguage == it,
@@ -143,7 +151,7 @@ fun ChooseLanguage(
             ) {
 
                 RadioButton(
-                    selected = selectedLanguage == it  ,
+                    selected = selectedLanguage == it,
                     onClick = { selectLanguage(it) }
                 )
 
@@ -153,18 +161,18 @@ fun ChooseLanguage(
     }
 }
 
-enum class NewsTheme(val textResource: Int){
-    Dark(textResource = R.string.defaulTheme),
-    Light(textResource = R.string.darkTheme)
+enum class NewsTheme(val textResource: Int) {
+    Dark(textResource = R.string.darkTheme),
+    Light(textResource = R.string.defaulTheme)
 }
 
-enum class NewsLanguage(val textResource: Int){
+enum class NewsLanguage(val textResource: Int) {
     Arab(textResource = R.string.ar),
     De(textResource = R.string.de),
     En(textResource = R.string.en)
 }
 
-private fun setLanguage(language: NewsLanguage){
+private fun setLanguage(language: NewsLanguage) {
 
     val localOptions = mapOf(
         NewsLanguage.En to "en",
@@ -180,9 +188,29 @@ private fun setLanguage(language: NewsLanguage){
 
 private fun getLanguage(): NewsLanguage {
     val selectedLanguage = AppCompatDelegate.getApplicationLocales()
-    return  when (selectedLanguage.toLanguageTags()){
-        "ar"-> NewsLanguage.Arab
+    return when (selectedLanguage.toLanguageTags()) {
+        "ar" -> NewsLanguage.Arab
         "de" -> NewsLanguage.De
         else -> NewsLanguage.En
     }
 }
+
+private fun setTheme(newsTheme: NewsTheme, context: Context) {
+
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+        val uiModeManager = context.getSystemService(Context.UI_MODE_SERVICE) as UiModeManager
+
+        if (newsTheme == NewsTheme.Light)
+            uiModeManager.setApplicationNightMode(UiModeManager.MODE_NIGHT_NO)
+        else
+            uiModeManager.setApplicationNightMode(UiModeManager.MODE_NIGHT_YES)
+
+    } else {
+        if (newsTheme == NewsTheme.Light)
+            AppCompatDelegate.setDefaultNightMode(MODE_NIGHT_NO)
+        else
+            AppCompatDelegate.setDefaultNightMode(MODE_NIGHT_YES)
+
+    }
+}
+

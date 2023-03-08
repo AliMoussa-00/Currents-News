@@ -28,6 +28,8 @@
     <string name="ok">OK</string>
     <string name="latestNews">Aktuelle Nachrichten</string>
     <string name="see_more">Mehr anzeigen</string>
+    <string name="bad_connection">Etwas stimmt nicht</string>
+    <string name="refresh">Bildschirm aktualisieren</string>
 
     <plurals name="days_passed">
         <item quantity="one">Vor 1 Tag</item>
