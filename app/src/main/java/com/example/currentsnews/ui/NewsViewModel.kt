@@ -256,4 +256,13 @@ class NewsViewModel @Inject constructor(
                 started = SharingStarted.WhileSubscribed(3_000)
             )
     }
+
+    //----------------------------------------
+    // storing theme in preferences dataStore
+    //----------------------------------------
+    fun storeTheme(mode: Int) {
+        viewModelScope.launch {
+            repository.storeTheme(mode)
+        }
+    }
 }

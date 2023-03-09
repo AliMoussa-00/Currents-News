@@ -88,7 +88,8 @@ fun NewsScreen(
         SettingsDialog(
             openDialog = openDialog.value,
             closeDialog = { openDialog.value = !openDialog.value },
-            resetLanguage = { newsViewModel.resetListNews() }
+            resetLanguage = { newsViewModel.resetListNews() },
+            newsViewModel = newsViewModel
         )
     }
 

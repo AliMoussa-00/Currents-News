@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.core.os.LocaleListCompat
 import com.example.currentsnews.R
+import com.example.currentsnews.ui.NewsViewModel
 
 
 @Composable
@@ -28,6 +29,7 @@ fun SettingsDialog(
     openDialog: Boolean,
     closeDialog: () -> Unit,
     resetLanguage: () -> Unit,
+    newsViewModel: NewsViewModel,
 ) {
 
     val isLightTheme = MaterialTheme.colors.isLight
@@ -44,7 +46,13 @@ fun SettingsDialog(
                         setLanguage(it)
                         resetLanguage()
                     },
-                    onSelectTheme = { setTheme(it, context) },
+                    onSelectTheme = { newsTheme ->
+                        setTheme(
+                            newsTheme = newsTheme,
+                            context = context,
+                            storeTheme = { newsViewModel.storeTheme(it) }
+                        )
+                    },
                     closeDialog = closeDialog
                 )
             }
@@ -195,7 +203,11 @@ private fun getLanguage(): NewsLanguage {
     }
 }
 
-private fun setTheme(newsTheme: NewsTheme, context: Context) {
+private fun setTheme(
+    newsTheme: NewsTheme,
+    context: Context,
+    storeTheme: (Int) -> Unit,
+) {
 
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
         val uiModeManager = context.getSystemService(Context.UI_MODE_SERVICE) as UiModeManager
@@ -206,11 +218,13 @@ private fun setTheme(newsTheme: NewsTheme, context: Context) {
             uiModeManager.setApplicationNightMode(UiModeManager.MODE_NIGHT_YES)
 
     } else {
-        if (newsTheme == NewsTheme.Light)
+        if (newsTheme == NewsTheme.Light) {
             AppCompatDelegate.setDefaultNightMode(MODE_NIGHT_NO)
-        else
+            storeTheme(MODE_NIGHT_NO)
+        } else {
             AppCompatDelegate.setDefaultNightMode(MODE_NIGHT_YES)
-
+            storeTheme(MODE_NIGHT_YES)
+        }
     }
 }
 
