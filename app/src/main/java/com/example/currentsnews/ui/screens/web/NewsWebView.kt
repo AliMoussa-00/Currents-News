@@ -1,6 +1,7 @@
 package com.example.currentsnews.ui.screens
 
 import android.annotation.SuppressLint
+import android.content.res.Resources
 import android.graphics.Bitmap
 import android.view.ViewGroup
 import android.webkit.WebChromeClient
@@ -15,19 +16,22 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.webkit.WebSettingsCompat
+import androidx.webkit.WebViewFeature
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun NewsWebViewContainer(url: String, backHandler: () -> Unit) {
     Scaffold(
-        content = { WebContent(url = url, backHandler = backHandler) }
+        content = { WebContent(url = url, backHandler = backHandler, resources = LocalContext.current.resources) }
     )
 }
 
 @Composable
-fun WebContent(url: String, backHandler: () -> Unit) {
+fun WebContent(url: String, backHandler: () -> Unit,resources: Resources) {
 
     BackHandler {
         backHandler()
@@ -55,7 +59,11 @@ fun WebContent(url: String, backHandler: () -> Unit) {
                         ViewGroup.LayoutParams.MATCH_PARENT
                     )
 
-                    settings.javaScriptEnabled = true
+                    settings.javaScriptEnabled = false
+
+                    if(WebViewFeature.isFeatureSupported(WebViewFeature.ALGORITHMIC_DARKENING))
+                        WebSettingsCompat.setAlgorithmicDarkeningAllowed(settings,true)
+
                     webViewClient = object : WebViewClient(){
                         override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
                             super.onPageStarted(view, url, favicon)
@@ -83,4 +91,3 @@ fun WebContent(url: String, backHandler: () -> Unit) {
     }
 
 }
-

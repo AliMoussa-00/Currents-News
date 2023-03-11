@@ -23,6 +23,7 @@ class NewsViewModel @Inject constructor(
 ) : ViewModel() {
 
     init {
+        deleteOldNews()
         refreshDatabase()
     }
 
@@ -263,6 +264,20 @@ class NewsViewModel @Inject constructor(
     fun storeTheme(mode: Int) {
         viewModelScope.launch {
             repository.storeTheme(mode)
+        }
+    }
+
+    //----------------------------
+    // delete old news
+    //----------------------------
+    private fun deleteOldNews(){
+        viewModelScope.launch {
+            try {
+                repository.deleteOldNews()
+            }
+            catch (e:IOException){
+                Log.e("TAG","Deleting old news : ${e.localizedMessage}")
+            }
         }
     }
 }

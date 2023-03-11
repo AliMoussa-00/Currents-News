@@ -17,4 +17,10 @@ interface NewsDao {
 
     @Query("DELETE FROM news WHERE language <> :myLanguages AND bookMarked = 0 ")
     suspend fun deleteNewsInOtherLanguage(myLanguages: String= AppCompatDelegate.getApplicationLocales().toLanguageTags())
+
+    @Query("DELETE FROM news WHERE " +
+            "julianday(strftime('%Y-%m-%d %H:%M:%S', 'now', 'localtime')) -" +
+            " julianday(strftime('%Y-%m-%d %H:%M:%S',substr(published,1,19)))" +
+            "> 4 AND bookMarked = 0")
+    suspend fun deleteOldNews()
 }

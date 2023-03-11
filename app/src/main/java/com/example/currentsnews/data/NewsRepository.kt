@@ -19,8 +19,8 @@ interface NewsRepository {
     suspend fun insertToRoom(news: List<NewsEntity>)
     suspend fun bookMarkNews(newsEntity: NewsEntity)
     suspend fun deleteNewsInOtherLanguages()
-
     suspend fun storeTheme(themeMode: Int)
+    suspend fun deleteOldNews()
 }
 
 class DefaultRepository @Inject constructor(
@@ -48,4 +48,6 @@ class DefaultRepository @Inject constructor(
                 preferences[THEME_MODE] = themeMode
             }
     }
+
+    override suspend fun deleteOldNews() = newsDao.deleteOldNews()
 }

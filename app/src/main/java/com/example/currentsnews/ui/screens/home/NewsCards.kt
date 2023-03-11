@@ -83,7 +83,8 @@ fun NewsCard(
                         ItemContents(
                             news = news,
                             onClickMarked = onClickMarked,
-                            onClickSeeMore = onClickSeeMore
+                            onClickSeeMore = onClickSeeMore,
+                            isExpaded = false
                         )
                     }
                 }
@@ -103,7 +104,8 @@ fun NewsCard(
                     news = news,
                     showDetail = true,
                     onClickMarked = onClickMarked,
-                    onClickSeeMore = onClickSeeMore
+                    onClickSeeMore = onClickSeeMore,
+                    isExpaded = true
                 )
 
 
@@ -123,7 +125,7 @@ fun ItemImage(
     val sizeModifier: Modifier =
         if (isRow) Modifier
             .width(140.dp)
-            .height(140.dp) else Modifier
+            .height(160.dp) else Modifier
             .fillMaxWidth()
             .height(180.dp)
 
@@ -160,20 +162,21 @@ fun ItemContents(
     showDetail: Boolean = false,
     onClickMarked: (News) -> Unit,
     onClickSeeMore: (String) -> Unit,
+    isExpaded:Boolean
 ) {
+
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .heightIn(min = 140.dp)
+            .heightIn(160.dp)
             .padding(8.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
+        verticalArrangement = Arrangement.SpaceBetween
     ) {
 
         Text(
             text = news.title, style = MaterialTheme.typography.h2
         )
         if (!showDetail) {
-            Spacer(modifier = Modifier.weight(1f))
             Row(
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                 verticalAlignment = Alignment.CenterVertically,
@@ -266,7 +269,7 @@ fun calculateDate(dateString: String, context: Context): String {
     val publishedDate = dateFormatter.parse(dateString)
     val currentTime = Calendar.getInstance().timeInMillis
     val timePassed = currentTime - publishedDate.time
-
+//2023-03-04 10:54:09 +0000
     val sec = (timePassed / 1000).toInt()
     val min = (sec / 60)
     val h = (min / 60)
