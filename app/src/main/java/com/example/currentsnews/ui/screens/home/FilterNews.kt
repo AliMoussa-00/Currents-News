@@ -13,6 +13,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -57,8 +58,9 @@ fun FilterChip(
     selectedFilters: Filters,
 ) {
     val isSelected = selectedFilters == filters
+
     val chipColor by animateColorAsState(
-        targetValue = if(isSelected)Color(0xFF03A9F4) else Color.White ,
+        targetValue = MaterialTheme.colors.secondary  ,
         animationSpec = tween(durationMillis = 150, easing = FastOutLinearInEasing)
     )
     val selectedModifier : Modifier = if(isSelected){
@@ -82,7 +84,7 @@ fun FilterChip(
     ) {
         Text(
             text = stringResource(id = filters.category),
-            color =if (isSelected) Color.White else Color.Black
+            color =if (isSelected) Color.White else MaterialTheme.colors.onSurface
         )
     }
 }

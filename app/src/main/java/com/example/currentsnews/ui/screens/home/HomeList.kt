@@ -37,7 +37,7 @@ fun HomeList(
     uiState: UiState,
     lazyListState: LazyListState,
 ) {
-    Log.e("TAG","(uiState.category=${uiState.category}")
+
     val listNews by if (uiState.category == Filters.All) {
         newsViewModel.latestNews.collectAsState()
     } else {

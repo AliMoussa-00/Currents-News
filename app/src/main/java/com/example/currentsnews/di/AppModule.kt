@@ -47,14 +47,11 @@ object AppModule {
             .create(NewsApiService::class.java)
 
     }
-
     @Provides
     @Singleton
     fun provideDatabaseDao(application: Application): NewsDao {
         return NewsDataBase.getDatabase(application).newsDao()
     }
-
-
     @Provides
     @Singleton
     fun providePreferencesDataStore(@ApplicationContext context: Context): DataStore<Preferences> {

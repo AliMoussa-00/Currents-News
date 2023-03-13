@@ -219,11 +219,15 @@ private fun setTheme(
 
     } else {
         if (newsTheme == NewsTheme.Light) {
+
             AppCompatDelegate.setDefaultNightMode(MODE_NIGHT_NO)
             storeTheme(MODE_NIGHT_NO)
+
         } else {
+
             AppCompatDelegate.setDefaultNightMode(MODE_NIGHT_YES)
             storeTheme(MODE_NIGHT_YES)
+
         }
     }
 }

@@ -5,6 +5,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import com.example.currentsnews.R
 
 @Composable
@@ -18,6 +19,7 @@ fun NewsTopBar(
             IconButton(onClick = { onClickSetting() }) {
                 Icon(imageVector = Icons.Default.Settings, contentDescription = stringResource(id = R.string.setting))
             }
-        }
+        },
+        elevation = 0.dp
     )
 }

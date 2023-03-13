@@ -1,15 +1,21 @@
 package com.example.currentsnews
 
 import android.app.Application
+import android.os.Build
+import android.util.Log
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
+import com.example.currentsnews.privateconstants.THEME_MODE
 import dagger.hilt.android.HiltAndroidApp
 import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
 @HiltAndroidApp
-class NewsApplication : Application() {
+class NewsApplication  : Application() {
 
     @Inject
     lateinit var dataStore: DataStore<Preferences>
@@ -21,7 +27,7 @@ class NewsApplication : Application() {
     override fun onCreate() {
         super.onCreate()
 
-       /* if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
             applicationScope.launch {
                 val mode= dataStore.data
                     .map { preferences ->
@@ -34,6 +40,6 @@ class NewsApplication : Application() {
                     AppCompatDelegate.setDefaultNightMode(it)
                 }
             }
-        }*/
+        }
     }
 }

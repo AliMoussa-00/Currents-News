@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="Theme.CurrentsNews" parent="Theme.AppCompat.DayNight.NoActionBar"/>
+    
+    <style name="Theme.AppCompat.Starting" parent="Theme.SplashScreen">
+
+        <!-- Required -->
+        <item name="postSplashScreenTheme">@style/Theme.CurrentsNews</item>
+    </style>
 </resources>

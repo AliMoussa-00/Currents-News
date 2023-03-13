@@ -1,6 +1,7 @@
 package com.example.currentsnews.ui.screens.home
 
 import android.content.Context
+import android.content.Intent
 import androidx.compose.animation.*
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.Spring
@@ -84,7 +85,7 @@ fun NewsCard(
                             news = news,
                             onClickMarked = onClickMarked,
                             onClickSeeMore = onClickSeeMore,
-                            isExpaded = false
+                            isExpanded = false
                         )
                     }
                 }
@@ -105,7 +106,7 @@ fun NewsCard(
                     showDetail = true,
                     onClickMarked = onClickMarked,
                     onClickSeeMore = onClickSeeMore,
-                    isExpaded = true
+                    isExpanded = true,
                 )
 
 
@@ -162,7 +163,7 @@ fun ItemContents(
     showDetail: Boolean = false,
     onClickMarked: (News) -> Unit,
     onClickSeeMore: (String) -> Unit,
-    isExpaded:Boolean
+    isExpanded:Boolean
 ) {
 
     Column(
@@ -233,8 +234,9 @@ fun ItemContents(
 fun TrailingButtons(
     news: News,
     onClickMarked: (News) -> Unit,
-    onClickSeeMore: (String) -> Unit,
+    onClickSeeMore: (String) -> Unit
 ) {
+    val context= LocalContext.current
     Row {
 
         IconButton(
@@ -249,7 +251,7 @@ fun TrailingButtons(
             )
         }
         IconButton(
-            onClick = { /*TODO*/ }
+            onClick = { shareNews(news.url,context) }
         ) {
             Icon(
                 imageVector = Icons.Default.Share,
@@ -281,6 +283,17 @@ fun calculateDate(dateString: String, context: Context): String {
         min > 0 -> context.resources.getQuantityString(R.plurals.min_passed, min, min)
         else -> context.resources.getQuantityString(R.plurals.sec_passed, sec, sec)
     }
+}
+
+private fun shareNews(urlNews:String,context: Context){
+
+    val sendIntent: Intent = Intent.createChooser(Intent().apply{
+        action = Intent.ACTION_SEND
+        putExtra(Intent.EXTRA_TEXT,urlNews)
+        type= "text/plain"
+    },null)
+
+    context.startActivity(sendIntent)
 }
 
 
