@@ -21,10 +21,11 @@ class NewsApplication  : Application() {
     lateinit var dataStore: DataStore<Preferences>
 
     companion object {
-        var applicationScope = MainScope()
+        val applicationScope = MainScope()
     }
 
     override fun onCreate() {
+
         super.onCreate()
 
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
@@ -36,7 +37,6 @@ class NewsApplication  : Application() {
                     }
 
                 mode.collect{
-                    Log.e("THEME MODE","mode=$it")
                     AppCompatDelegate.setDefaultNightMode(it)
                 }
             }

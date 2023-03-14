@@ -4,6 +4,10 @@
     
     <style name="Theme.AppCompat.Starting" parent="Theme.SplashScreen">
 
+        <item name="windowSplashScreenAnimatedIcon">
+            @drawable/ic_launcher_news_echo_full_foreground
+        </item>
+
         <!-- Required -->
         <item name="postSplashScreenTheme">@style/Theme.CurrentsNews</item>
     </style>

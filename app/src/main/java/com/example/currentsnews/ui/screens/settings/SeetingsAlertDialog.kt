@@ -46,9 +46,8 @@ fun SettingsDialog(
                         setLanguage(it)
                         resetLanguage()
                     },
-                    onSelectTheme = { newsTheme ->
+                    onSelectTheme = {
                         setTheme(
-                            newsTheme = newsTheme,
                             context = context,
                             storeTheme = { newsViewModel.storeTheme(it) }
                         )
@@ -66,7 +65,7 @@ fun DialogContent(
     selectedLanguage: NewsLanguage,
     selectedTheme: NewsTheme,
     selectLanguage: (NewsLanguage) -> Unit,
-    onSelectTheme: (NewsTheme) -> Unit,
+    onSelectTheme: () -> Unit,
     closeDialog: () -> Unit,
 ) {
     Surface(
@@ -111,7 +110,7 @@ fun ChooseTheme(
     modifier: Modifier = Modifier,
     radioOptions: List<NewsTheme> = listOf(NewsTheme.Light, NewsTheme.Dark),
     selectedTheme: NewsTheme,
-    onSelectTheme: (NewsTheme) -> Unit,
+    onSelectTheme: () -> Unit,
 
     ) {
     Column {
@@ -122,14 +121,14 @@ fun ChooseTheme(
                     .fillMaxWidth()
                     .selectable(
                         selected = selectedTheme == it,
-                        onClick = { onSelectTheme(it) }
+                        onClick = { onSelectTheme() }
                     ),
                 verticalAlignment = Alignment.CenterVertically
             ) {
 
                 RadioButton(
                     selected = selectedTheme == it,
-                    onClick = { onSelectTheme(it) }
+                    onClick = { onSelectTheme() }
                 )
 
                 Text(text = stringResource(id = it.textResource))
@@ -204,7 +203,6 @@ private fun getLanguage(): NewsLanguage {
 }
 
 private fun setTheme(
-    newsTheme: NewsTheme,
     context: Context,
     storeTheme: (Int) -> Unit,
 ) {
@@ -212,23 +210,20 @@ private fun setTheme(
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
         val uiModeManager = context.getSystemService(Context.UI_MODE_SERVICE) as UiModeManager
 
-        if (newsTheme == NewsTheme.Light)
+        if (AppCompatDelegate.getDefaultNightMode() == MODE_NIGHT_YES)
             uiModeManager.setApplicationNightMode(UiModeManager.MODE_NIGHT_NO)
         else
             uiModeManager.setApplicationNightMode(UiModeManager.MODE_NIGHT_YES)
 
     } else {
-        if (newsTheme == NewsTheme.Light) {
+        if (AppCompatDelegate.getDefaultNightMode() == MODE_NIGHT_YES) {
 
             AppCompatDelegate.setDefaultNightMode(MODE_NIGHT_NO)
-            storeTheme(MODE_NIGHT_NO)
 
         } else {
-
             AppCompatDelegate.setDefaultNightMode(MODE_NIGHT_YES)
-            storeTheme(MODE_NIGHT_YES)
-
         }
+        storeTheme(AppCompatDelegate.getDefaultNightMode())
     }
 }
 
